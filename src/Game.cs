@@ -111,6 +111,11 @@ class Game
 			case "look":
 				Console.WriteLine(player.currentRoom.GetLongDescription());
 				break;
+			case "status":
+				Console.WriteLine("your health = " + player.Health);
+				if (!player.Alive){	Console.WriteLine("You are dead");}
+				else {Console.WriteLine("You are alive");}
+				break;
 		}
 
 		return wantToQuit;
@@ -153,6 +158,7 @@ class Game
 		}
 
 		player.currentRoom = nextRoom;
+		player.Damage(5);
 		Console.WriteLine(player.currentRoom.GetLongDescription());
 	}
 }
