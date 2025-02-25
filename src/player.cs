@@ -1,31 +1,42 @@
 class Player
 {
-// auto property
-    public Room currentRoom { get; set; }
-    public Game game;
+    // auto property
+    public Room CurrentRoom { get; set; }
+    // public Game game;
     private int health;
-    private bool alive = true;
-// constructor
+    private Inventory backpack;
 
-    public  int Health
+    private bool alive = true;
+    // constructor
+
+    public Player()
+    {
+        CurrentRoom = null;
+        health = 100;
+        backpack = new Inventory(25);
+    }
+
+    public int Health
     {
         get { return health; }
         set { health = value; }
     }
-    public bool  Alive
+    public bool Alive
     {
-        get { 
-        if (health <= 0)
+        get
         {
-            alive = false;
+            if (health <= 0)
+            {
+                alive = false;
+            }
+            return alive;
         }
-            return alive; }
         set { alive = value; }
     }
-
+    //methods
     public void Damage(int amount)
     {
-        health-=amount;
+        health -= amount;
     }
 
     public void Heal(int amount)
@@ -41,9 +52,37 @@ class Player
         }
     }
 
-    public Player()
+    public bool TakeFromChest(string itemName)
     {
-        currentRoom = null;
-        health = 100;
+        Item pItem = CurrentRoom.Chest.Get(itemName);
+        if (backpack.FreeWeight() - pItem.Weight >= 0)
+        {
+            CurrentRoom.Chest.Put(itemName, pItem);
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+        // TODO implement:
+        // Remove the Item from the Room
+        // Put it in your backpack.
+        // Inspect returned values.
+        // Communicate to the user what's happening.
+        // If the item doesn't fit your backpack, put it back in the chest.
+        // Return true/false for success/failure
     }
+    public bool DropToChest(string itemName)
+    {
+        
+        // TODO implement:
+        // Remove Item from your inventory.
+        // Add the Item to the Room
+        // Inspect returned values
+        // Communicate to the user what's happening
+        // Return true/false for success/failure
+        return false;
+    }
+
 }
