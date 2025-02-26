@@ -5,7 +5,6 @@ class Game
 {
 	// Private fields
 	private Parser parser;
-	private Room room;
 	private Player player;
 	// private Item item;
 
@@ -117,23 +116,23 @@ class Game
 				Console.WriteLine(player.CurrentRoom.GetLongDescription());
 				if (player.CurrentRoom.Chest.Items.Count > 0)
 				{
-				Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
+					Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
 				}
 				break;
 			case "status":
-				Console.WriteLine("your health = " + player.Health);
-				if (!player.Alive) { Console.WriteLine("You are dead"); }
-				else { Console.WriteLine("You are alive"); }
+				Status();
 				break;
 			case "take":
 				Take(command);
-				Console.WriteLine(player.Backpack.PrintItems());
 				break;
 			case "drop":
 				Drop(command);
 				break;
 			case "inventory":
 				Console.WriteLine(player.Backpack.PrintInvItems());
+				break;
+			case "use":
+				player.Use(command);
 				break;
 		}
 
@@ -144,10 +143,12 @@ class Game
 		if (!command.HasSecondWord())
 		{
 			Console.WriteLine("Take what?");
+			return;
 		}
 		if (player.CurrentRoom.Chest.Items.ContainsKey(command.SecondWord))
 		{
 			player.TakeFromChest(command.SecondWord); ;
+			Console.WriteLine($"you took the {command.SecondWord}");
 		}
 		else if (!player.CurrentRoom.Chest.Items.ContainsKey(command.SecondWord))
 		{
@@ -156,14 +157,34 @@ class Game
 	}
 	private void Drop(Command command)
 	{
-		player.DropToChest(command.SecondWord); ;
+		if (!command.HasSecondWord())
+		{
+			Console.WriteLine("Drop what?");
+			return;
+		}
+		if (player.Backpack.Items.ContainsKey(command.SecondWord))
+		{
+			player.DropToChest(command.SecondWord); ;
+			Console.WriteLine($"You dropped the {command.SecondWord}");
+		}
+		else if (!player.Backpack.Items.ContainsKey(command.SecondWord))
+		{
+			Console.WriteLine($"there is no {command.SecondWord} in your backpack");
+		}
+	}
+
+	private void Status()
+	{
+		Console.WriteLine("your health = " + player.Health);
+		if (!player.Alive) { Console.WriteLine("You are dead"); }
+		else { Console.WriteLine("You are alive"); }
+		Console.WriteLine(player.Backpack.FreeWeight() + "KG free space");
 	}
 
 
 	// ######################################
 	// implementations of user commands:
 	// ######################################
-
 	// Print out some help information.
 	// Here we print the mission and a list of the command words.
 	private void PrintHelp()

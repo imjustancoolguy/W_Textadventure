@@ -8,7 +8,7 @@ class Player
 
     private bool alive = true;
     // constructor
-    
+
     public Inventory Backpack
     {
         get { return backpack; }
@@ -71,27 +71,37 @@ class Player
             DropToChest(itemName);
             return false;
         }
-        // TODO implement:
-        // Remove the Item from the Room
-        // Put it in your backpack.
-        // Inspect returned values.
-        // Communicate to the user what's happening.
-        // If the item doesn't fit your backpack, put it back in the chest.
-        // Return true/false for success/failure
     }
     public bool DropToChest(string itemName)
     {
         Item pItem = backpack.Get(itemName);
         backpack.Get(itemName);
         CurrentRoom.Chest.Put(itemName, pItem);
-        Console.WriteLine("you have dropped the item");
-        // TODO implement:
-        // Remove Item from your inventory.
-        // Add the Item to the Room
-        // Inspect returned values
-        // Communicate to the user what's happening
-        // Return true/false for success/failure
+        Console.WriteLine($"you have dropped {itemName}");
         return false;
+    }
+
+    public void Use(Command command)
+    {
+        if (command.SecondWord == null)
+        {
+            Console.WriteLine("use what?");
+            return;
+        }
+        if (backpack.Items.ContainsKey(command.SecondWord))
+        {
+            switch (command.SecondWord)
+            {
+                case "cheese":
+                    Heal(50);
+                    backpack.Items.Remove(command.SecondWord);
+                    break;
+            }
+        }
+        else
+        {
+            Console.WriteLine($"there is no {command.SecondWord} to use");
+        }
     }
 
 }
