@@ -50,7 +50,7 @@ class Game
 		office.AddExit("west", lab);
 
 		// Create your Items here
-		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 25);
+		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1);
 
 		// And add them to the Rooms
 		outside.Chest.Put("cheese", cheese);
@@ -115,7 +115,10 @@ class Game
 				break;
 			case "look":
 				Console.WriteLine(player.CurrentRoom.GetLongDescription());
+				if (player.CurrentRoom.Chest.Items.Count > 0)
+				{
 				Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
+				}
 				break;
 			case "status":
 				Console.WriteLine("your health = " + player.Health);
@@ -124,9 +127,13 @@ class Game
 				break;
 			case "take":
 				Take(command);
+				Console.WriteLine(player.Backpack.PrintItems());
 				break;
 			case "drop":
 				Drop(command);
+				break;
+			case "inventory":
+				Console.WriteLine(player.Backpack.PrintInvItems());
 				break;
 		}
 
@@ -134,11 +141,22 @@ class Game
 	}
 	private void Take(Command command)
 	{
-		player.TakeFromChest(command.SecondWord);;
+		if (!command.HasSecondWord())
+		{
+			Console.WriteLine("Take what?");
+		}
+		if (player.CurrentRoom.Chest.Items.ContainsKey(command.SecondWord))
+		{
+			player.TakeFromChest(command.SecondWord); ;
+		}
+		else if (!player.CurrentRoom.Chest.Items.ContainsKey(command.SecondWord))
+		{
+			Console.WriteLine($"there is no {command.SecondWord} here");
+		}
 	}
 	private void Drop(Command command)
 	{
-		player.DropToChest(command.SecondWord);;
+		player.DropToChest(command.SecondWord); ;
 	}
 
 

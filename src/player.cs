@@ -8,6 +8,11 @@ class Player
 
     private bool alive = true;
     // constructor
+    
+    public Inventory Backpack
+    {
+        get { return backpack; }
+    }
 
     public Player()
     {

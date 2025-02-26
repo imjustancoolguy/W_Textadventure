@@ -6,9 +6,9 @@ class Inventory
     // constructor
     public Dictionary<string, Item> Items
     {
-        get { return Items; }
+        get { return items; }
     }
-    
+
     public Inventory(int maxWeight)
     {
         this.maxWeight = maxWeight;
@@ -18,15 +18,33 @@ class Inventory
 
     // methods
     public string PrintItems()
-	{
-		string item = "Look you found ";
-		foreach(string name in items.Keys)
-		{
-			item += name;
-			item += ", ";
-		}
-		return item;
-	}
+    {
+        string item = "Look you found ";
+        foreach (string name in items.Keys)
+        {
+            item += name;
+            item += ", ";
+        }
+        return item;
+    }
+
+    public string PrintInvItems()
+    {
+        string item = "";
+        if (items.Count == 0)
+        {
+            item = "There are no items in your inventory";
+        }
+        else
+        {
+            foreach (string name in items.Keys)
+            {
+                item += name;
+                item += ", ";
+            }
+        }
+        return item;
+    }
     public bool Put(string itemName, Item item)
     {
         if (item.Weight > maxWeight)
@@ -39,12 +57,6 @@ class Inventory
             items.Add(itemName, item);
             return true;
         }
-        // TODO implement:
-        // Check the Weight of the Item and check
-        // for enough space in the Inventory
-        // Does the Item fit?
-        // Put Item in the items Dictionary
-        // Return true/false for success/fai
     }
     public Item Get(string itemName)
     {
@@ -55,10 +67,6 @@ class Inventory
             return gottenitem;
         }
         return null;
-        // TODO implement:
-        // Find Item in items Dictionary
-        // remove Item from items Dictionary if found   
-        // return Item or null
     }
 
     // methods
@@ -71,9 +79,9 @@ class Inventory
         }
         return total;
     }
-    
+
     public int FreeWeight()
-    {       
+    {
         return maxWeight - TotalWeight();
     }
 
