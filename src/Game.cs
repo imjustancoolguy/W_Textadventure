@@ -1,9 +1,11 @@
 using System;
+using System.Runtime.InteropServices;
 
 class Game
 {
 	// Private fields
 	private Parser parser;
+	private Room room;
 	private Player player;
 	// private Item item;
 
@@ -48,9 +50,10 @@ class Game
 		office.AddExit("west", lab);
 
 		// Create your Items here
-		Item cheese = new Item ("Cheese","A very delicious piece of cheese", 25);
-		
+		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 25);
+
 		// And add them to the Rooms
+		outside.Chest.Put("cheese", cheese);
 
 		// Start game outside
 		player.CurrentRoom = outside;
@@ -83,6 +86,7 @@ class Game
 		Console.WriteLine("Type 'help' if you need help.");
 		Console.WriteLine();
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
+		Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
 	}
 
 	// Given a command, process (that is: execute) the command.
@@ -92,7 +96,7 @@ class Game
 	{
 		bool wantToQuit = false;
 
-		if(command.IsUnknown())
+		if (command.IsUnknown())
 		{
 			Console.WriteLine("I don't know what you mean...");
 			return wantToQuit; // false
@@ -111,21 +115,37 @@ class Game
 				break;
 			case "look":
 				Console.WriteLine(player.CurrentRoom.GetLongDescription());
+				Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
 				break;
 			case "status":
 				Console.WriteLine("your health = " + player.Health);
-				if (!player.Alive){	Console.WriteLine("You are dead");}
-				else {Console.WriteLine("You are alive");}
+				if (!player.Alive) { Console.WriteLine("You are dead"); }
+				else { Console.WriteLine("You are alive"); }
+				break;
+			case "take":
+				Take(command);
+				break;
+			case "drop":
+				Drop(command);
 				break;
 		}
 
 		return wantToQuit;
 	}
+	private void Take(Command command)
+	{
+		player.TakeFromChest(command.SecondWord);;
+	}
+	private void Drop(Command command)
+	{
+		player.DropToChest(command.SecondWord);;
+	}
+
 
 	// ######################################
 	// implementations of user commands:
 	// ######################################
-	
+
 	// Print out some help information.
 	// Here we print the mission and a list of the command words.
 	private void PrintHelp()
@@ -141,7 +161,7 @@ class Game
 	// room, otherwise print an error message.
 	private void GoRoom(Command command)
 	{
-		if(!command.HasSecondWord())
+		if (!command.HasSecondWord())
 		{
 			// if there is no second word, we don't know where to go...
 			Console.WriteLine("Go where?");
@@ -154,7 +174,7 @@ class Game
 		Room nextRoom = player.CurrentRoom.GetExit(direction);
 		if (nextRoom == null)
 		{
-			Console.WriteLine("There is no door to "+direction+"!");
+			Console.WriteLine("There is no door to " + direction + "!");
 			return;
 		}
 

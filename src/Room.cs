@@ -5,6 +5,7 @@ class Room
 {
 	// Private fields
 	private string description;
+	Player player;
 	private Dictionary<string, Room> exits; // stores exits of this room.
 	private Inventory chest;
 
@@ -50,6 +51,8 @@ class Room
 		str += GetExitString();
 		return str;
 	}
+
+	
 
 	// Return the room that is reached if we go from this room in direction
 	// "direction". If there is no room in that direction, return null.

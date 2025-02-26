@@ -1,16 +1,32 @@
 class Inventory
 {
     // fields
-    private Item item;
     private int maxWeight;
     private Dictionary<string, Item> items;
     // constructor
+    public Dictionary<string, Item> Items
+    {
+        get { return Items; }
+    }
+    
     public Inventory(int maxWeight)
     {
         this.maxWeight = maxWeight;
         this.items = new Dictionary<string, Item>();
     }
+
+
     // methods
+    public string PrintItems()
+	{
+		string item = "Look you found ";
+		foreach(string name in items.Keys)
+		{
+			item += name;
+			item += ", ";
+		}
+		return item;
+	}
     public bool Put(string itemName, Item item)
     {
         if (item.Weight > maxWeight)
@@ -51,10 +67,11 @@ class Inventory
         int total = 0;
         foreach (KeyValuePair<string, Item> entry in items)
         {
-            total += item.Weight;
+            total += entry.Value.Weight;
         }
         return total;
     }
+    
     public int FreeWeight()
     {       
         return maxWeight - TotalWeight();

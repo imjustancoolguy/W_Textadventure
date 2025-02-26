@@ -57,12 +57,13 @@ class Player
         Item pItem = CurrentRoom.Chest.Get(itemName);
         if (backpack.FreeWeight() - pItem.Weight >= 0)
         {
-            CurrentRoom.Chest.Put(itemName, pItem);
+            backpack.Put(itemName, pItem);
             return true;
         }
         else
         {
-
+            Console.WriteLine("youre backpack is full");
+            DropToChest(itemName);
             return false;
         }
         // TODO implement:
@@ -75,7 +76,10 @@ class Player
     }
     public bool DropToChest(string itemName)
     {
-        
+        Item pItem = backpack.Get(itemName);
+        backpack.Get(itemName);
+        CurrentRoom.Chest.Put(itemName, pItem);
+        Console.WriteLine("you have dropped the item");
         // TODO implement:
         // Remove Item from your inventory.
         // Add the Item to the Room
