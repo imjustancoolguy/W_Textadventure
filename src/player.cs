@@ -47,6 +47,10 @@ class Player
     public void Heal(int amount)
     {
         health += amount;
+        if (health > 100)
+        {
+            health = 100;
+        }
     }
 
     public void IsAlive()
@@ -95,6 +99,7 @@ class Player
                 case "cheese":
                     Heal(50);
                     backpack.Items.Remove(command.SecondWord);
+                    Console.WriteLine("You healed 50 hp while eating the cheese!");
                     break;
             }
         }
@@ -103,5 +108,4 @@ class Player
             Console.WriteLine($"there is no {command.SecondWord} to use");
         }
     }
-
 }
