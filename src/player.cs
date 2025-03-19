@@ -72,14 +72,18 @@ class Player
         else
         {
             Console.WriteLine("youre backpack is full");
-            DropToChest(itemName);
+            CurrentRoom.Chest.Put(itemName, pItem);
             return false;
         }
     }
     public bool DropToChest(string itemName)
     {
         Item pItem = backpack.Get(itemName);
-        backpack.Get(itemName);
+        if (pItem == null)
+        {
+            // CurrentRoom.Chest.Put(itemName, pItem);
+            return false;
+        }
         CurrentRoom.Chest.Put(itemName, pItem);
         Console.WriteLine($"you have dropped {itemName}");
         return false;

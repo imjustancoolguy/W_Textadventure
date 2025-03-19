@@ -7,6 +7,8 @@ class Room
 	private string description;
 	private Dictionary<string, Room> exits; // stores exits of this room.
 	private Inventory chest;
+	private Dictionary<string, Item> itemEList;
+	public Dictionary<string, Enemy> rEnemies;
 
 	//property 
 	public Inventory Chest
@@ -14,6 +16,8 @@ class Room
 		get { return chest; }
 	}
 
+	// add items to random list
+	
 	
 
 
@@ -44,7 +48,7 @@ class Room
 	//     Exits: north, west
 	public string GetLongDescription()
 	{
-		string str = "You are ";
+		string str = "";
 		str += description;
 		str += ".\n";
 		str += GetExitString();
@@ -73,4 +77,25 @@ class Room
 
 		return str;
 	}
+
+	// public void addEnemy(string eName, Enemy enemy)
+	// {
+	// 	rEnemies.Add(eName, enemy);
+	// }
+
+	public string printEnemy(Enemy enemy)
+	{
+		string str = "";
+		str += enemy.Name;
+		return str;
+	}
+	
+	// private Room randomRoom()
+    // {
+	// 	Random rnd = new Random();
+	// 	int num = rnd.Next(0, itemRList.Length);
+
+	// 	chest.Put($"{itemRList[num]}", itemRList[num]);
+
+    // }
 }

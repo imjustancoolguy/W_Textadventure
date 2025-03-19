@@ -40,7 +40,8 @@ class Inventory
         {
             foreach (string name in items.Keys)
             {
-                item += name;
+                item += name + " ";
+                item += items[name].Weight + "KG";
                 item += ", ";
             }
         }

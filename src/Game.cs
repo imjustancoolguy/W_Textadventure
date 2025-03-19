@@ -20,42 +20,49 @@ class Game
 	private void CreateRooms()
 	{
 		// Create the rooms
-		Room outside = new Room("outside the main entrance of the university");
-		Room theatre = new Room("in a lecture theatre");
-		Room pub = new Room("in the campus pub");
-		Room lab = new Room("in a computing lab");
-		Room office = new Room("in the computing admin office");
-		Room cloud = new Room("somehow inside a cloud");
-		Room dirt = new Room("Somehow noclipping inside the dirt");
+		Room spawn = new Room("The spawn point of the dungeon");
+		Room guild = new Room("Welcome to the dungeons guild");
+		Room gacha = new Room("We love gambling!");
+		Room home = new Room("Welcome home!");
+		Room shop = new Room("You are at the shop");
+		Room gate = new Room("Welcome to the gate of the dungeon");
+		Room dungeon = new Room("It is le dungeon");
 
 		// Initialise room exits
-		outside.AddExit("east", theatre);
-		outside.AddExit("south", lab);
-		outside.AddExit("west", pub);
-		outside.AddExit("up", cloud);
-		outside.AddExit("down", dirt);
+		spawn.AddExit("east", shop);
+		spawn.AddExit("south", gacha);
+		spawn.AddExit("west", guild);
+		spawn.AddExit("north", gate);
 
-		theatre.AddExit("west", outside);
+		gate.AddExit("east", home);
+		gate.AddExit("south", spawn);
+		gate.AddExit("north", dungeon);
 
-		pub.AddExit("east", outside);
+		guild.AddExit("east", spawn);
 
-		cloud.AddExit("down", outside);
+		shop.AddExit("west", spawn);
 
-		dirt.AddExit("up", outside);
+		home.AddExit("west", gate);
 
-		lab.AddExit("north", outside);
-		lab.AddExit("east", office);
-
-		office.AddExit("west", lab);
+		gacha.AddExit("north", spawn);
 
 		// Create your Items here
 		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1);
+		Item bigCheese = new Item("BigCheese", "a big piece of cheese", 25);
 
 		// And add them to the Rooms
-		outside.Chest.Put("cheese", cheese);
+		spawn.Chest.Put("cheese", cheese);
+		spawn.Chest.Put("BigCheese", bigCheese);
+
+		// Create new enemy's
+		Enemy zombie = new Enemy(100, "zombie");
+
+		// add enemy's to the room
+		// dungeon.addEnemy("zombie", zombie);
 
 		// Start game outside
-		player.CurrentRoom = outside;
+		player.CurrentRoom = spawn;
+
 	}
 
 	//  Main play routine. Loops until end of play.
@@ -107,6 +114,10 @@ class Game
 				PrintHelp();
 				break;
 			case "go":
+				if (command.SecondWord.Contains("next"))
+				{
+
+				}
 				GoRoom(command);
 				break;
 			case "quit":
@@ -118,6 +129,10 @@ class Game
 				{
 					Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
 				}
+				// if (player.CurrentRoom.rEnemies.Count > 0)
+				// {
+				// 	Console.WriteLine(player.CurrentRoom.rEnemies.printEnemy());
+				// }
 				break;
 			case "status":
 				Status();
@@ -147,8 +162,10 @@ class Game
 		}
 		if (player.CurrentRoom.Chest.Items.ContainsKey(command.SecondWord))
 		{
-			player.TakeFromChest(command.SecondWord); ;
-			Console.WriteLine($"you took the {command.SecondWord}");
+			if (player.TakeFromChest(command.SecondWord))
+			{
+				Console.WriteLine($"you took the {command.SecondWord}");
+			}
 		}
 		else if (!player.CurrentRoom.Chest.Items.ContainsKey(command.SecondWord))
 		{
@@ -165,7 +182,6 @@ class Game
 		if (player.Backpack.Items.ContainsKey(command.SecondWord))
 		{
 			player.DropToChest(command.SecondWord); ;
-			Console.WriteLine($"You dropped the {command.SecondWord}");
 		}
 		else if (!player.Backpack.Items.ContainsKey(command.SecondWord))
 		{
