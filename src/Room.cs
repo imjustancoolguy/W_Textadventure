@@ -7,8 +7,6 @@ class Room
 	private string description;
 	private Dictionary<string, Room> exits; // stores exits of this room.
 	private Inventory chest;
-	private Dictionary<string, Item> itemEList;
-	public Dictionary<string, Enemy> rEnemies;
 
 	//property 
 	public Inventory Chest

@@ -17,7 +17,7 @@ class Player
     public Player()
     {
         CurrentRoom = null;
-        health = 100;
+        health = 10;
         backpack = new Inventory(25);
     }
 

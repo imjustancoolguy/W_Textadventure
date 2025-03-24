@@ -87,8 +87,8 @@ class Game
 	private void PrintWelcome()
 	{
 		Console.WriteLine();
-		Console.WriteLine("Welcome to Zuul!");
-		Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
+		Console.WriteLine("Welcome to Delicious Depths!");
+		Console.WriteLine("Delicious Depths is a new, incredibly delicious adventure game.");
 		Console.WriteLine("Type 'help' if you need help.");
 		Console.WriteLine();
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
@@ -108,6 +108,7 @@ class Game
 			return wantToQuit; // false
 		}
 
+
 		switch (command.CommandWord)
 		{
 			case "help":
@@ -116,7 +117,7 @@ class Game
 			case "go":
 				if (command.SecondWord.Contains("next"))
 				{
-
+					
 				}
 				GoRoom(command);
 				break;
@@ -149,6 +150,12 @@ class Game
 			case "use":
 				player.Use(command);
 				break;
+		}
+		
+		if (player.Health <= 0)
+		{
+			Console.WriteLine("you have died!");
+			wantToQuit = true;
 		}
 
 		return wantToQuit;
@@ -237,4 +244,6 @@ class Game
 		player.Damage(5);
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
 	}
+
+
 }
