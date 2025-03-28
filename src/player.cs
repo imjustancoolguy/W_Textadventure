@@ -6,7 +6,7 @@ class Player
     private int health;
     private Inventory backpack;
 
-    private int currency;
+    private double currency;
 
 
     // constructor
@@ -30,7 +30,7 @@ class Player
         set { health = value; }
     }
 
-    public int Currency
+    public double Currency
     {
         get { return currency; }
         set { currency = value; }

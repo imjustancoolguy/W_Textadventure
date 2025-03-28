@@ -5,7 +5,7 @@ class Shop
 
     public Shop(Player newPlayer)
     {
-        stock = new Inventory(999999);
+        stock = new Inventory(999999999);
         customer = newPlayer;
     }
 
@@ -19,22 +19,22 @@ class Shop
         if (product != null && product != "")
         {
             Item pProduct = stock.Get(product);
-            if (customer.Currency >= pProduct.Price)
+            if (pProduct != null)
             {
-                if (stock.Items.ContainsKey(product))
+                if (customer.Currency >= pProduct.Price)
                 {
                     customer.Backpack.Put(product, pProduct);
                     customer.Currency -= pProduct.Price;
                 }
                 else
                 {
-                    Console.WriteLine($"there is no {product} for sale");
+                    Console.WriteLine("you are too broke to buy this");
                     stock.Put(product, pProduct);
                 }
             }
             else
             {
-                Console.WriteLine("you are too broke to buy this");
+                Console.WriteLine($"there is no {product} for sale");
             }
         }
         else
@@ -45,6 +45,24 @@ class Shop
 
     public void Sell(string product)
     {
+        if (product != null && product != "")
+        {
+            Item sProduct = customer.Backpack.Get(product);
+            if (sProduct != null)
+            {
 
+                stock.Put(product, sProduct);
+                customer.Currency += Math.Floor(sProduct.Price * 0.95);
+
+            }
+            else
+            {
+                Console.WriteLine($"there is no {product} to sell");
+            }
+        }
+        else
+        {
+            Console.WriteLine("purchase what?");
+        }
     }
 }

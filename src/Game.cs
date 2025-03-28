@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 class Game
@@ -50,8 +51,9 @@ class Game
 		gacha.AddExit("north", spawn);
 
 		// Create your Items here
-		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1, 50);
-		Item bigCheese = new Item("BigCheese", "a big piece of cheese", 25, 1250);
+		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1, 25);
+		Item bigCheese = new Item("BigCheese", "a big piece of cheese", 25, 625);
+		Item exitKey = new Item("exitkey", "the key to the exit of the dungeon", 500)
 
 		// And add them to the Rooms
 		shop.Stock.Put("cheese", cheese);
@@ -118,10 +120,6 @@ class Game
 				PrintHelp();
 				break;
 			case "go":
-				if (command.SecondWord.Contains("next"))
-				{
-					
-				}
 				GoRoom(command);
 				break;
 			case "quit":
@@ -132,6 +130,10 @@ class Game
 				if (player.CurrentRoom.Chest.Items.Count > 0)
 				{
 					Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
+				}
+				if (player.CurrentRoom == shopR)
+				{
+					Console.WriteLine(shop.Stock.PrintShopItems());
 				}
 				break;
 			case "status":
@@ -156,8 +158,18 @@ class Game
 					Console.WriteLine("There is nothing to purchase here");
 				}
 				break;
+			case "sell":
+				if (player.CurrentRoom == shopR)
+				{
+					shop.Sell(command.SecondWord);
+				}
+				else
+				{
+					Console.WriteLine("There is nothing to sell here");
+				}
+				break;
 		}
-		
+
 		if (player.Health <= 0)
 		{
 			Console.WriteLine("you have died!");
@@ -251,6 +263,18 @@ class Game
 		player.CurrentRoom = nextRoom;
 		player.Damage(5);
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
+		if (player.CurrentRoom == shopR)
+		{
+			Console.WriteLine(shop.Stock.PrintShopItems());
+		}
+	}
+
+	private void ShopItems()
+	{
+		foreach (string item in shop.Stock.Items.Keys)
+		{
+
+		}
 	}
 
 

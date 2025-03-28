@@ -29,6 +29,18 @@ class Inventory
         return item;
     }
 
+        public string PrintShopItems()
+    {
+        string item = "here are my wares: ";
+        foreach (string name in items.Keys)
+        {
+            item += name + " ";
+            item +="$" + items[name].Price;
+            item += ", ";
+        }
+        return item;
+    }
+
     public string PrintInvItems()
     {
         string item = "";
