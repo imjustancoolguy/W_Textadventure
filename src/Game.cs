@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -53,11 +54,14 @@ class Game
 		// Create your Items here
 		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1, 25);
 		Item bigCheese = new Item("BigCheese", "a big piece of cheese", 25, 625);
-		Item exitKey = new Item("exitkey", "the key to the exit of the dungeon", 500)
+		Item teleportationCrystal = new Item("teleportationcrystal", "you can use this item to leave the dungeon and win", 1, 500);
 
-		// And add them to the Rooms
+		// And add them to the shop
 		shop.Stock.Put("cheese", cheese);
-		shop.Stock.Put("BigCheese", bigCheese);
+		shop.Stock.Put("teleportationCrystal", teleportationCrystal);
+
+		// add items to rooms
+		home.Chest.Put("BigCheese", bigCheese);
 
 		// Create new enemy's
 		Enemy zombie = new Enemy(100, "zombie");
@@ -170,7 +174,12 @@ class Game
 				break;
 		}
 
-		if (player.Health <= 0)
+		if (player.Checkwin() == true)
+		{
+			Console.WriteLine("You won good job!");
+			wantToQuit = true;
+		}
+		else if (player.Health == 0)
 		{
 			Console.WriteLine("you have died!");
 			wantToQuit = true;
@@ -269,13 +278,6 @@ class Game
 		}
 	}
 
-	private void ShopItems()
-	{
-		foreach (string item in shop.Stock.Items.Keys)
-		{
-
-		}
-	}
 
 
 

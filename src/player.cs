@@ -8,6 +8,8 @@ class Player
 
     private double currency;
 
+    private bool win = false;
+
 
     // constructor
 
@@ -21,7 +23,7 @@ class Player
         CurrentRoom = null;
         health = 100;
         backpack = new Inventory(25);
-        currency = 1000;
+        currency = 0;
     }
 
     public int Health
@@ -60,6 +62,18 @@ class Player
         else
         {
             return true;
+        }
+    }
+
+    public bool Checkwin()
+    {
+        if (win == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -107,6 +121,16 @@ class Player
                     backpack.Items.Remove(command.SecondWord);
                     Console.WriteLine("You healed 50 hp while eating the cheese!");
                     break;
+                case "BigCheese":
+                    Heal(1250);
+                    backpack.Items.Remove(command.SecondWord);
+                    Console.WriteLine("You healed 50 hp while eating the cheese!");
+                    break;
+                case "teleportationCrystal":
+                    win = true;
+                    break;
+                
+
             }
         }
         else
@@ -114,5 +138,5 @@ class Player
             Console.WriteLine($"there is no {command.SecondWord} to use");
         }
     }
-    
+
 }
