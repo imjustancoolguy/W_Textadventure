@@ -17,7 +17,8 @@ class CommandLibrary
 		validCommands.Add("status");
 		validCommands.Add("take");
 		validCommands.Add("drop");
-		validCommands.Add("inventory");
+		validCommands.Add("purchase");
+		validCommands.Add("sell");
 		validCommands.Add("use");
 	}
 

@@ -6,7 +6,9 @@ class Player
     private int health;
     private Inventory backpack;
 
-    private bool alive = true;
+    private int currency;
+
+
     // constructor
 
     public Inventory Backpack
@@ -17,8 +19,9 @@ class Player
     public Player()
     {
         CurrentRoom = null;
-        health = 10;
+        health = 100;
         backpack = new Inventory(25);
+        currency = 1000;
     }
 
     public int Health
@@ -26,18 +29,13 @@ class Player
         get { return health; }
         set { health = value; }
     }
-    public bool Alive
+
+    public int Currency
     {
-        get
-        {
-            if (health <= 0)
-            {
-                alive = false;
-            }
-            return alive;
-        }
-        set { alive = value; }
+        get { return currency; }
+        set { currency = value; }
     }
+
     //methods
     public void Damage(int amount)
     {
@@ -53,11 +51,15 @@ class Player
         }
     }
 
-    public void IsAlive()
+    public bool IsAlive()
     {
         if (health <= 0)
         {
-            alive = false;
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -112,4 +114,5 @@ class Player
             Console.WriteLine($"there is no {command.SecondWord} to use");
         }
     }
+    
 }

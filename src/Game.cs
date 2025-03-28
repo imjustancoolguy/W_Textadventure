@@ -6,6 +6,8 @@ class Game
 	// Private fields
 	private Parser parser;
 	private Player player;
+	private Room shopR;
+	private Shop shop;
 	// private Item item;
 
 	// Constructor
@@ -13,6 +15,7 @@ class Game
 	{
 		parser = new Parser();
 		player = new Player();
+		shop = new Shop(player);
 		CreateRooms();
 	}
 
@@ -24,12 +27,12 @@ class Game
 		Room guild = new Room("Welcome to the dungeons guild");
 		Room gacha = new Room("We love gambling!");
 		Room home = new Room("Welcome home!");
-		Room shop = new Room("You are at the shop");
+		shopR = new Room("You are at the shop");
 		Room gate = new Room("Welcome to the gate of the dungeon");
 		Room dungeon = new Room("It is le dungeon");
 
 		// Initialise room exits
-		spawn.AddExit("east", shop);
+		spawn.AddExit("east", shopR);
 		spawn.AddExit("south", gacha);
 		spawn.AddExit("west", guild);
 		spawn.AddExit("north", gate);
@@ -40,19 +43,19 @@ class Game
 
 		guild.AddExit("east", spawn);
 
-		shop.AddExit("west", spawn);
+		shopR.AddExit("west", spawn);
 
 		home.AddExit("west", gate);
 
 		gacha.AddExit("north", spawn);
 
 		// Create your Items here
-		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1);
-		Item bigCheese = new Item("BigCheese", "a big piece of cheese", 25);
+		Item cheese = new Item("Cheese", "A very delicious piece of cheese", 1, 50);
+		Item bigCheese = new Item("BigCheese", "a big piece of cheese", 25, 1250);
 
 		// And add them to the Rooms
-		spawn.Chest.Put("cheese", cheese);
-		spawn.Chest.Put("BigCheese", bigCheese);
+		shop.Stock.Put("cheese", cheese);
+		shop.Stock.Put("BigCheese", bigCheese);
 
 		// Create new enemy's
 		Enemy zombie = new Enemy(100, "zombie");
@@ -130,10 +133,6 @@ class Game
 				{
 					Console.WriteLine(player.CurrentRoom.Chest.PrintItems());
 				}
-				// if (player.CurrentRoom.rEnemies.Count > 0)
-				// {
-				// 	Console.WriteLine(player.CurrentRoom.rEnemies.printEnemy());
-				// }
 				break;
 			case "status":
 				Status();
@@ -144,11 +143,18 @@ class Game
 			case "drop":
 				Drop(command);
 				break;
-			case "inventory":
-				Console.WriteLine(player.Backpack.PrintInvItems());
-				break;
 			case "use":
 				player.Use(command);
+				break;
+			case "purchase":
+				if (player.CurrentRoom == shopR)
+				{
+					shop.purchase(command.SecondWord);
+				}
+				else
+				{
+					Console.WriteLine("There is nothing to purchase here");
+				}
 				break;
 		}
 		
@@ -199,9 +205,11 @@ class Game
 	private void Status()
 	{
 		Console.WriteLine("your health = " + player.Health);
-		if (!player.Alive) { Console.WriteLine("You are dead"); }
+		if (!player.IsAlive()) { Console.WriteLine("You are dead"); }
 		else { Console.WriteLine("You are alive"); }
 		Console.WriteLine(player.Backpack.FreeWeight() + "KG free space");
+		Console.WriteLine(player.Backpack.PrintInvItems());
+		Console.WriteLine($"you have:{player.Currency} gold");
 	}
 
 
@@ -244,6 +252,7 @@ class Game
 		player.Damage(5);
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
 	}
+
 
 
 }
